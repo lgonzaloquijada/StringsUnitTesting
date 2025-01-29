@@ -1,109 +1,99 @@
 ﻿using Humanizer;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace StringManipulation
+namespace StringManipulation;
+
+public class StringOperations
 {
-    public class StringOperations
+    private readonly ILogger _logger;
+
+    public StringOperations() { }
+
+    public StringOperations(ILogger<StringOperations> logger)
     {
-        private readonly ILogger _logger;
-        public StringOperations() {
+        _logger = logger;
+    }
+
+    public string ConcatenateStrings(string str1, string str2)
+    {
+        return str1 + " " + str2;
+    }
+
+    public string ReverseString(string str)
+    {
+        char[] charArray = str.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
+
+    public int GetStringLength(string str)
+    {
+        if (str is null)
+        {
+            throw new ArgumentNullException();
         }
 
-        public StringOperations(ILogger<StringOperations> logger)
+        return str.Length;
+    }
+
+    public string RemoveWhitespace(string input)
+    {
+        return new string(input.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+    }
+
+    public string TruncateString(string input, int maxLength)
+    {
+        if (maxLength <= 0)
         {
-            _logger = logger;
+            throw new ArgumentOutOfRangeException();
         }
 
-        public string ConcatenateStrings(string str1, string str2)
+        if (string.IsNullOrEmpty(input) || maxLength >= input.Length)
         {
-            return str1 + " " + str2;
+            return input;
         }
 
-        public string ReverseString(string str)
-        {
-            char[] charArray = str.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
-        }
+        return input.Substring(0, maxLength);
+    }
 
-        public int GetStringLength(string str)
+    public bool IsPalindrome(string input)
+    {
+        string reversed = ReverseString(input);
+        return input.Equals(reversed, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public int CountOccurrences(string input, char character)
+    {
+        int count = 0;
+        foreach (char c in input)
         {
-            if(str is null)
+            if (c == character)
             {
-                throw new ArgumentNullException();
+                count++;
             }
-
-            return str.Length;
         }
 
-        public string RemoveWhitespace(string input)
-        {
-            return new string(input.ToCharArray()
-                .Where(c => !Char.IsWhiteSpace(c))
-                .ToArray());
-        }
+        _logger.LogInformation($"Number of concurrecies is:{count}");
+        return count;
+    }
 
-        public string TruncateString(string input, int maxLength)
-        {
-            if(maxLength <=0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+    public string Pluralize(string input)
+    {
+        return input.Pluralize();
+    }
 
-            if (string.IsNullOrEmpty(input) || maxLength >= input.Length)
-            {
-                return input;
-            }
+    public string QuantintyInWords(string input, int quantity)
+    {
+        return input.ToQuantity(quantity, ShowQuantityAs.Words);
+    }
 
-            return input.Substring(0, maxLength);
-        }
+    public int FromRomanToNumber(string input)
+    {
+        return input.FromRoman();
+    }
 
-        public bool IsPalindrome(string input)
-        {
-            string reversed = ReverseString(input);
-            return input.Equals(reversed, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public int CountOccurrences(string input, char character)
-        {
-            int count = 0;
-            foreach (char c in input)
-            {
-                if (c == character)
-                {
-                    count++;
-                }
-            }
-
-            _logger.LogInformation($"Number of concurrecies is:{count}");
-            return count;
-        }
-
-        public string Pluralize(string input)
-        {
-            return input.Pluralize();
-        }
-
-        public string QuantintyInWords(string input, int quantity)
-        {
-            return input.ToQuantity(quantity, ShowQuantityAs.Words);
-        }
-
-        public int FromRomanToNumber(string input)
-        {
-            return input.FromRoman();
-        }
-
-        public string ReadFile(IFileReaderConector fileReader, string fileName)
-        {
-            return fileReader.ReadString(fileName);
-        }
-
+    public string ReadFile(IFileReaderConector fileReader, string fileName)
+    {
+        return fileReader.ReadString(fileName);
     }
 }
