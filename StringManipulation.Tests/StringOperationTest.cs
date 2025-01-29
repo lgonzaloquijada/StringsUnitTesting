@@ -71,4 +71,47 @@ public class StringOperationTest
         Assert.StartsWith("ten", result);
         Assert.Contains("cat", result);
     }
+
+    [Fact]
+    public void GetStringLength_Exception()
+    {
+        // Arrange
+        var stringOperation = new StringOperations();
+
+        // Act
+        Action act = () => stringOperation.GetStringLength(null);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentNullException>(act);
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public void TruncateString()
+    {
+        // Arrange
+        var stringOperation = new StringOperations();
+
+        // Act
+        var result = stringOperation.TruncateString("Hello World", 5);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Equal("Hello", result);
+    }
+
+    [Fact]
+    public void TruncateString_Exception()
+    {
+        // Arrange
+        var stringOperation = new StringOperations();
+
+        // Act
+        Action act = () => stringOperation.TruncateString("Hello World", 0);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(act);
+        Assert.NotNull(exception);
+    }
 }
