@@ -42,4 +42,33 @@ public class StringOperationTest
         // Assert
         Assert.False(result);
     }
+
+    [Fact]
+    public void RemoveWhitespace()
+    {
+        // Arrange
+        var stringOperation = new StringOperations();
+
+        // Act
+        var result = stringOperation.RemoveWhitespace("Hello World");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Equal("HelloWorld", result);
+    }
+
+    [Fact]
+    public void QuantintyInWords()
+    {
+        // Arrange
+        var stringOperation = new StringOperations();
+
+        // Act
+        var result = stringOperation.QuantintyInWords("cat", 10);
+
+        // Assert
+        Assert.StartsWith("ten", result);
+        Assert.Contains("cat", result);
+    }
 }
