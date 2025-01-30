@@ -1,7 +1,8 @@
-﻿
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using StringManipulation;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 internal class Program
 {
     private static void Main(string[] args)
@@ -14,7 +15,6 @@ internal class Program
 
         // Create a logger
         var logger = loggerFactory.CreateLogger<StringOperations>();
-
 
         while (true)
         {
@@ -93,7 +93,9 @@ internal class Program
                     char charToFind = char.Parse(Console.ReadLine());
 
                     Console.WriteLine("");
-                    Console.WriteLine(stringOperations.CountOccurrences(inputConcurrency, charToFind));
+                    Console.WriteLine(
+                        stringOperations.CountOccurrences(inputConcurrency, charToFind)
+                    );
                     break;
                 case 8:
                     Console.WriteLine("write a string");
@@ -129,7 +131,6 @@ internal class Program
 
             Console.WriteLine("");
             Console.WriteLine("///");
-
         }
     }
 }

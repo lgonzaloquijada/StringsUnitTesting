@@ -1,4 +1,7 @@
-﻿namespace StringManipulation.Tests;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+
+namespace StringManipulation.Tests;
 
 public class StringOperationTest
 {
@@ -119,5 +122,28 @@ public class StringOperationTest
         var result = stringOperation.FromRomanToNumber(romanNumber);
 
         Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void CountOccurrences()
+    {
+        var mockLogger = new Mock<ILogger<StringOperations>>();
+        var stringOperation = new StringOperations(mockLogger.Object);
+
+        var result = stringOperation.CountOccurrences("Hello World", 'l');
+
+        Assert.Equal(3, result);
+    }
+
+    [Fact]
+    public void ReadFile()
+    {
+        var stringOperation = new StringOperations();
+        var mockFileReader = new Mock<IFileReaderConector>();
+        mockFileReader.Setup(p => p.ReadString(It.IsAny<string>())).Returns("Reading file");
+
+        var result = stringOperation.ReadFile(mockFileReader.Object, "file.txt");
+
+        Assert.Equal("Reading file", result);
     }
 }
