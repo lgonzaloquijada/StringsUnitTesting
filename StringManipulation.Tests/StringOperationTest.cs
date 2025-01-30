@@ -17,30 +17,19 @@ public class StringOperationTest
         Assert.Equal("Hello World", result);
     }
 
-    [Fact]
-    public void IsPalindrome_True()
+    [Theory]
+    [InlineData("Hello", false)]
+    [InlineData("madam", true)]
+    public void IsPalindrome(string input, bool expected)
     {
         // Arrange
         var stringOperation = new StringOperations();
 
         // Act
-        var result = stringOperation.IsPalindrome("madam");
+        var result = stringOperation.IsPalindrome(input);
 
         // Assert
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void IsPalindrome_False()
-    {
-        // Arrange
-        var stringOperation = new StringOperations();
-
-        // Act
-        var result = stringOperation.IsPalindrome("hello");
-
-        // Assert
-        Assert.False(result);
+        Assert.Equal(result, expected);
     }
 
     [Fact]
@@ -113,5 +102,22 @@ public class StringOperationTest
         // Assert
         var exception = Assert.Throws<ArgumentOutOfRangeException>(act);
         Assert.NotNull(exception);
+    }
+
+    [Theory]
+    [InlineData("III", 3)]
+    [InlineData("V", 5)]
+    [InlineData("X", 10)]
+    [InlineData("L", 50)]
+    [InlineData("C", 100)]
+    [InlineData("D", 500)]
+    [InlineData("M", 1000)]
+    public void FromRomanToNumber(string romanNumber, int expected)
+    {
+        var stringOperation = new StringOperations();
+
+        var result = stringOperation.FromRomanToNumber(romanNumber);
+
+        Assert.Equal(expected, result);
     }
 }
